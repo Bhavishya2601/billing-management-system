@@ -12,24 +12,27 @@ ITEM_TOTALS=()
 show_banner() {
     clear
     cols=$(tput cols)
+    rows=$(tput lines)
     banner_text="Billing Management System"
 
-    # Use a large figlet font like 'big'
     banner_output=$(figlet -w "$cols" -f big "$banner_text")
 
-    # Center the banner output
+    banner_lines=$(echo "$banner_output" | wc -l)
+
+    top_padding=$(( (rows - banner_lines - 2) / 2 ))
+
+    for ((i = 0; i < top_padding; i++)); do
+        echo
+    done
+
     while IFS= read -r line; do
         printf "%*s\n" $(( (${#line} + cols) / 2 )) "$line"
     done <<< "$banner_output"
 
-    # Messages to be centered
     welcome_msg="Welcome to the Billing Management System"
     press_msg="Press any key to continue..."
 
-    # Center the welcome message
-    printf "%*s\n" $(( (${#welcome_msg} + cols) / 2 )) "$welcome_msg"
-
-    # Center the "press any key" message
+    printf "\n%*s\n" $(( (${#welcome_msg} + cols) / 2 )) "$welcome_msg"
     printf "%*s\n" $(( (${#press_msg} + cols) / 2 )) "$press_msg"
 
     read -n 1 -s
